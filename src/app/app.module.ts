@@ -61,7 +61,8 @@ const routes: Routes = [
           strictActionSerializability: true,
           strictStateSerializability:true
       }
-  })
+  }),
+  StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   bootstrap: [AppComponent]
 })
