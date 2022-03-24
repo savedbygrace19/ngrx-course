@@ -22,12 +22,14 @@ import {EffectsModule} from '@ngrx/effects';
 import {EntityDataModule} from '@ngrx/data';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { metaReducers, reducers } from './reducers';
+import { AuthGuard } from './auth/auth.guard';
 
 
 const routes: Routes = [
   {
     path: 'courses',
-    loadChildren: () => import('./courses/courses.module').then(m => m.CoursesModule)
+    loadChildren: () => import('./courses/courses.module').then(m => m.CoursesModule),
+    canActivate: [AuthGuard]
   },
   {
     path: '**',
@@ -62,8 +64,12 @@ const routes: Routes = [
           strictStateSerializability:true
       }
   }),
-  StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
-  ],
+  StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+  EffectsModule.forRoot([]),
+  StoreRouterConnectingModule.forRoot({
+    stateKey: 'router',
+    routerState: RouterState.Minimal
+  })],
   bootstrap: [AppComponent]
 })
 export class AppModule {
